@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Video" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="xiW-Hc-6gW"/>
+                        <viewControllerLayoutGuide type="bottom" id="xTv-2K-G7S"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="O8j-66-enN" customClass="VideoView" customModule="Video" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LWA-N8-au6">
+                                <rect key="frame" x="19" y="133.5" width="337.5" height="400"/>
+                                <color key="backgroundColor" red="0.36862745098039218" green="0.13333333333333333" blue="0.51372549019607838" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uf8-4B-jOl">
+                                <rect key="frame" x="127.5" y="73.5" width="120" height="120"/>
+                                <color key="backgroundColor" red="0.36862745099999999" green="0.1333333333" blue="0.51372549020000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="120" id="H54-cZ-JDY"/>
+                                    <constraint firstAttribute="width" constant="120" id="hPo-e7-eeY"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="uf8-4B-jOl" firstAttribute="centerY" secondItem="LWA-N8-au6" secondAttribute="top" id="55w-Hu-hsW"/>
+                            <constraint firstItem="LWA-N8-au6" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.6" id="EPF-vd-qGc"/>
+                            <constraint firstItem="LWA-N8-au6" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.9" id="Kg6-bm-zjh"/>
+                            <constraint firstItem="LWA-N8-au6" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="R7x-JB-VRJ"/>
+                            <constraint firstItem="uf8-4B-jOl" firstAttribute="centerX" secondItem="LWA-N8-au6" secondAttribute="centerX" id="W0U-d1-HbX"/>
+                            <constraint firstItem="LWA-N8-au6" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="upO-Ga-4hf"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="cardView" destination="LWA-N8-au6" id="xch-bu-bER"/>
+                        <outlet property="circularView" destination="uf8-4B-jOl" id="2Jh-vY-GrJ"/>
+                        <outlet property="videoView" destination="O8j-66-enN" id="VJa-VD-P6n"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-260" y="105"/>
+        </scene>
+    </scenes>
+</document>
