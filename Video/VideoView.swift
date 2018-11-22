@@ -24,7 +24,7 @@ class VideoView: UIView {
         didSet {
             //rescaling of video layer
             
-            if(bounds.size.width<=100)
+            if(Int(bounds.size.width) <= boundedWidth)
             {
                 playerLayer?.frame.size.width = 90
                 playerLayer?.frame.size.height = (playerLayer!.frame.size.width) * 1.7

@@ -7,13 +7,12 @@
 import UIKit
 
 
-class ViewController: UIViewController {
+class ViewController: UIViewController,CAAnimationDelegate {
     
     
     @IBOutlet weak var videoView: VideoView!
     @IBOutlet weak var cardView: UIView!
     @IBOutlet weak var circularView: UIView!
-    var circleLayer: CAShapeLayer = CAShapeLayer()
     var circleView:UIView = UIView()
     
     
@@ -32,7 +31,7 @@ class ViewController: UIViewController {
         self.videoView.frame = self.view.frame
         videoView.isLoop = true
         videoView.play()
-        self.perform(#selector(fadeIn(withDuration:)), with: nil, afterDelay: 5.0)
+        self.perform(#selector(fadeIn), with: nil, afterDelay: 5.0)
     }
     
     // MARK: Method to setup Card View
@@ -49,75 +48,65 @@ class ViewController: UIViewController {
     
     // MARK: Methods for animation
     
-    func addCircleView() {
-        let diceRoll = CGFloat(Int(arc4random_uniform(7))*50)
-        let circleWidth = CGFloat(200)
-        let circleHeight = circleWidth
+    func addCircleView(animateIn:Bool) {
+        if(animateIn == true){
+            self.circleView.frame.size.height = 0
+            self.circleView.frame.size.width = 0
+            self.circleView.center =  self.circularView.center
+            
+        }else {
+            circleView.frame = CGRect(x: self.view.frame.width/2, y: self.view.frame.height/2, width: 0, height: 0)
+        }
         
-        // Create a new CircleView
-        circleView.frame = CGRect(x: diceRoll, y: 0, width: circleWidth, height: circleHeight)
-        view.addSubview(circleView)
-        // Animate the drawing of the circle over the course of 1 second
-        animateCircle(duration: 1.0)
+        let maskPath = UIBezierPath(ovalIn: self.circleView.frame)
+        
+        // define the masking layer to be able to show that circle animation
+        let maskLayer = CAShapeLayer()
+        maskLayer.frame = self.view.frame
+        maskLayer.path = maskPath.cgPath
+        view.layer.mask = maskLayer
+        
+        // define the end frame
+        let bigCirclePath = UIBezierPath(ovalIn: CGRect(x: self.view.frame.origin.x - 400, y: self.view.frame.origin.y - 400, width: self.view.frame.width + 1000 , height: self.view.frame.height + 1000 ))
+        
+        // create the animation
+        let pathAnimation = CABasicAnimation(keyPath: "path")
+        pathAnimation.delegate = self
+        pathAnimation.fromValue = maskPath.cgPath
+        pathAnimation.toValue = bigCirclePath
+        pathAnimation.duration = 0.5
+        maskLayer.path = bigCirclePath.cgPath
+        maskLayer.add(pathAnimation, forKey: "pathAnimation")
     }
     
-    func animateCircle(duration: TimeInterval) {
-        // We want to animate the strokeEnd property of the circleLayer
-        let animation = CABasicAnimation(keyPath: "strokeEnd")
-        
-        // Set the animation duration appropriately
-        animation.duration = duration
-        
-        // Animate from 0 (no circle) to 1 (full circle)
-        animation.fromValue = 0
-        animation.toValue = 1
-        
-        // Do a linear animation (i.e The speed of the animation stays the same)
-        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-        
-        // Set the circleLayer's strokeEnd property to 1.0 now so that it's the
-        // Right value when the animation ends
-        circleLayer.strokeEnd = 1.0
-        circleLayer.strokeColor = UIColor.red.cgColor
-        circleLayer.fillColor = UIColor.gray.cgColor
-        
-        // Do the actual animation
-        circleLayer.add(animation, forKey: "animateCircle")
+    func loadview(){
+        self.videoView.frame = self.view.frame
+        self.videoView.layer.cornerRadius = 0.0
     }
+   
     
     // MARK: Method to animate the video to full screen view
     
-    func fadeOut(withDuration duration: TimeInterval = 0.5) {
-        
-        UIView.animate(withDuration: duration, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-            self.videoView.frame = self.view.frame
-            self.videoView.layer.cornerRadius = 0.0
-        }, completion: {
-            (value: Bool) in
-            self.perform(#selector(self.fadeIn(withDuration:)), with: nil, afterDelay: 5.0)
-        })
+    func fadeOut() {
+        self.perform(#selector(self.loadview), with: nil, afterDelay: 0.01)
+        addCircleView(animateIn: true)
+        self.perform(#selector(self.fadeIn), with: nil, afterDelay: 5.0)
     }
     
     // MARK: Method to animate the video to circular view
     
-    func fadeIn(withDuration duration: TimeInterval = 0.3) {
-        
-        UIView.animate(withDuration: duration, delay: 0.0, options: UIViewAnimationOptions.curveEaseIn, animations: {
-            self.addCircleView()
-            self.videoView.frame.size.height = 90
-            self.videoView.frame.size.width = 90
-            self.videoView.center =  self.circularView.center
-            self.videoView.layer.cornerRadius = self.videoView.frame.size.width/2
-            self.view.bringSubview(toFront: self.videoView)
-            self.videoView.clipsToBounds = true
-            self.videoView.playerLayer?.needsDisplayOnBoundsChange = true
-            self.cardView.isHidden = false
-            self.circularView.isHidden = false
-        }, completion: {
-            (value: Bool) in
-            self.perform(#selector(self.fadeOut(withDuration:)), with: nil, afterDelay: 5.0)
-            
-        })
+    func fadeIn() {
+        self.addCircleView(animateIn: false)
+        self.videoView.frame.size.height = CGFloat(videoHeight)
+        self.videoView.frame.size.width = CGFloat(videoWidth)
+        self.videoView.center =  self.circularView.center
+        self.videoView.layer.cornerRadius = self.videoView.frame.size.width/2
+        self.view.bringSubview(toFront: self.videoView)
+        self.videoView.clipsToBounds = true
+        self.videoView.playerLayer?.needsDisplayOnBoundsChange = true
+        self.cardView.isHidden = false
+        self.circularView.isHidden = false
+        self.perform(#selector(self.fadeOut), with: nil, afterDelay: 5.0)
     }
 }
 
